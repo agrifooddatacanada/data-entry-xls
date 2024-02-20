@@ -1,0 +1,32 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: data entry Excel
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - name: Agri-food Data Canada
+    location: '50 Stone Road East, University of Guelph'
+    post-code: N1G 2W1
+    country: CA
+    city: Gueph
+    email: adc@uoguelph.ca
+    website: 'https://agrifooddatacanada.ca'
+    tel: (226) 971-0357
+repository-code: 'https://github.com/agrifooddatacanada/data-entry-xls'
+abstract: >-
+  data entry Excel is a dynamic spreadsheet desgined for
+  efficient data collection while adhering to predefined
+  attributes outlined in an OCA schema. The data entry Excel
+  code lets users generate a data entry Excel sheet based on
+  the rules outlined in an OCA schema.
+keywords:
+  - Overlays Capture Architecture
+  - Data Entry
+license: EUPL-1.2
+commit: 3ca96aec2606bf690e040f8126ccad0eda4b80e3
+version: '0.1'
+date-released: '2023-04-28'
