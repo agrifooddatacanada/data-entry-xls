@@ -16,21 +16,21 @@ Learn more about [how to create a schema and generate a data entry Excel](https:
 
 > The data entry Excel comprises three separate sheets, each serving a vital role:
 
-- `schema description`: This sheet offers a comprehensive overview of the overlays within an OCA schema bundle. Certain overlyas have been renamed to enhance ease of understanding within the data entry Excel. For instance, **Sensitive** attributes in the data entry Excel correspond to **flagged attributes** in the OCA schema bundle, while **Required** aligns with **conformance**.
+- `schema description`: This sheet offers a comprehensive overview of the overlays within an OCA schema bundle. Certain overlays have been renamed to enhance ease of understanding within the data entry Excel. For instance, **Sensitive** attributes in the data entry Excel correspond to **flagged attributes** in the OCA schema bundle, while **Required** aligns with **conformance**.
 
 Moreover, for attributes requiring data input from specified options, a **look up table** is provided. These options, known as [entry codes](https://oca.colossi.network/specification/#entry-code-overlay) in OCA, are presented in a user-friendly format for quick reference. [Watch a video about look up tables in data entry](https://www.youtube.com/watch?v=T-Uzr3p41SM) or [read our blog post about entry codes](https://agrifooddatacanada.ca/streamlining-data-integrity-the-role-of-entry-codes-in-data-entry/)
 
 <img src="./images/lookup.png" alt="drop down list for entry codes" width="500">
 
-- `data entry`: This is the primary workspace for inputting collected data. Attributes with entry codes are conveniently presented as dropdown list, facilitating accurate and efficient data entry.
+- `data entry`: This is the primary workspace for inputting collected data. Attributes with entry codes are conveniently presented as a dropdown list, facilitating accurate and efficient data entry.
 
 <img src="./images/dropdown.png" alt="drop down list for entry codes" width="500">
 
 - `schema conformant`: Designed to ensure data integrity, this sheet verifies that data entered in the **data entry** sheet adheres to the attributes definitions outlined in the schema bundle.
 
-**N.B** Although there is some sort of validation that occurs in data entry Excel, the complete data validation is done with another tool. Currently, [a data validation tool is implemented in `python`](https://pypi.org/project/oca-ds-validator/0.0.2/).
+**N.B** Although some validation occurs in data entry Excel, the complete data validation is done with another tool. Currently, [a data validation tool is implemented in `python`](https://pypi.org/project/oca-ds-validator/0.0.2/).
 
-> Collectively, these three sheets provide a comprehensive framework for structured data entry, simplifying the process while maintaing adherence to schema specifications.
+> Collectively, these three sheets provide a comprehensive framework for structured data entry, simplifying the process while maintaining adherence to schema specifications.
 
 ## data entry Excel Implementation
 
