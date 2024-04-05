@@ -1,5 +1,6 @@
 const fs = require('fs')
 const ExcelJS = require('exceljs');
+const { get } = require('http');
 
 // Custom error-handling function
 function WorkbookError(message) {
@@ -8,13 +9,25 @@ function WorkbookError(message) {
   this.stack = new Error().stack;
 }
 
+// helper function to get the column letter
+function getColumnLetter(columnNumber) {
+    let columnLetter = '';
+    while (columnNumber > 0) {
+        let remainder = (columnNumber - 1) % 26;
+        columnLetter = String.fromCharCode(65 + remainder) + columnLetter;
+        columnNumber = Math.floor((columnNumber - 1) / 26);
+    }
+    return columnLetter;
+}
+
 WorkbookError.prototype = Object.create(Error.prototype);
 WorkbookError.prototype.constructor = WorkbookError;
 
 function generateDataEntry(path) {
 
     const originJsonData = [];
-    const json = JSON.parse(fs.readFileSync(path, 'utf8'));
+    const json = JSON.parse(fs.readFileSync(path, 'utf8')).bundle;
+    // const json = JSON.parse(fs.readFileSync(path, 'utf8'));
 
     try {
         if (json.hasOwnProperty('capture_base')) {
@@ -316,13 +329,14 @@ function generateDataEntry(path) {
             };
 
             try {
-                for (let col = 0; col < attributeNames.length; col++) {
-                    const letter = String.fromCharCode(65 + col);
+                for (let col = 1; col < attributeNames.length; col++) {
+                    const letter = getColumnLetter(col);
 
                     for (let row = 1; row <= 1000; row++) {
                         const formula = `IF(ISBLANK('Data Entry'!$${letter}$${row + 1}), "", 'Data Entry'!$${letter}$${row + 1})`;
 
-                        const cell = sheet3.getCell(row + 1, col + 1);
+                        const cell = sheet3.getCell(row + 1, col);
+
                         cell.value = {
                         formula: formula,
                         };
@@ -742,6 +756,7 @@ function generateDataEntry(path) {
             type: 'list',
             showDropDown: true,
             // formula1: `='Schema Description'!$A$${start}:$A$${end}`,
+            // ='Schema Description'!$A$166:$A$172
             formulae: listEntries,
             showErrorMessage: true,
         };
@@ -750,22 +765,54 @@ function generateDataEntry(path) {
             const attrKeys = Object.keys(attributesIndex);
             const attrNameFromAttrKeys = attrKeys.map(key => key.split(',')[0]);
             const col_i = attrNameFromAttrKeys.indexOf(attrName) + 1;
-            const letter = String.fromCharCode(65 + col_i - 1);
+            // const letter = getColumnLetter(col_i);
             sheet2.getCell(row, col_i).dataValidation = validationRule;
+            // const formula = `IF(ISBLANK('Data Entry'!$${letter}$${row}), "", VLOOKUP('Data Entry'!$${letter}$${row}, 'Schema Description'!$A$${start}:$B$${end}, 2))`;
+            // sheet3.getCell(row, col_i).value = {
+            // formula: formula,
+            // };
+        }
+    // };
+
+    // First Pass: Data Validation
+    // for (const [attrName, [start, end]] of lookUpTable) {
+    //     const validationRule = {
+    //         type: 'list',
+    //         showDropDown: true,
+    //         formula1: `='Schema Description'!$A$${start}:$A$${end}`,
+    //         showErrorMessage: true,
+    //     };
+
+    //     for (let row = 2; row <= 1000; row++) {
+    //         const attrKeys = Object.keys(attributesIndex);
+    //         const attrNameFromAttrKeys = attrKeys.map(key => key.split(',')[0]);
+    //         const col_i = attrNameFromAttrKeys.indexOf(attrName) + 1;
+    //         // const letter = getColumnLetter(col_i);
+    //         sheet2.getCell(row, col_i).dataValidation = validationRule;
+    //     }
+    }
+
+    // Second Pass: Formula Generation
+    for (const [attrName, [start, end]] of lookUpTable) {
+        for (let row = 2; row <= 1000; row++) {
+            const attrKeys = Object.keys(attributesIndex);
+            const attrNameFromAttrKeys = attrKeys.map(key => key.split(',')[0]);
+            const col_i = attrNameFromAttrKeys.indexOf(attrName) + 1;
+            const letter = getColumnLetter(col_i);
             const formula = `IF(ISBLANK('Data Entry'!$${letter}$${row}), "", VLOOKUP('Data Entry'!$${letter}$${row}, 'Schema Description'!$A$${start}:$B$${end}, 2))`;
             sheet3.getCell(row, col_i).value = {
-            formula: formula,
+                formula: formula,
             };
         }
-    };
+    }
 
     return workbook;
 };
 
 // [test]:
-
 async function generateAndSaveDateEntry() {
-    const filename = 'chicken_example.json';
+    // const filename = 'chicken_example.json';
+    const filename = 'tests/test6.json';
     const outputFilePath = `${filename.split('.')[0]}_data_entry.xlsx`;
 
   try {
