@@ -765,43 +765,11 @@ function generateDataEntry(path) {
             const attrKeys = Object.keys(attributesIndex);
             const attrNameFromAttrKeys = attrKeys.map(key => key.split(',')[0]);
             const col_i = attrNameFromAttrKeys.indexOf(attrName) + 1;
-            // const letter = getColumnLetter(col_i);
-            sheet2.getCell(row, col_i).dataValidation = validationRule;
-            // const formula = `IF(ISBLANK('Data Entry'!$${letter}$${row}), "", VLOOKUP('Data Entry'!$${letter}$${row}, 'Schema Description'!$A$${start}:$B$${end}, 2))`;
-            // sheet3.getCell(row, col_i).value = {
-            // formula: formula,
-            // };
-        }
-    // };
-
-    // First Pass: Data Validation
-    // for (const [attrName, [start, end]] of lookUpTable) {
-    //     const validationRule = {
-    //         type: 'list',
-    //         showDropDown: true,
-    //         formula1: `='Schema Description'!$A$${start}:$A$${end}`,
-    //         showErrorMessage: true,
-    //     };
-
-    //     for (let row = 2; row <= 1000; row++) {
-    //         const attrKeys = Object.keys(attributesIndex);
-    //         const attrNameFromAttrKeys = attrKeys.map(key => key.split(',')[0]);
-    //         const col_i = attrNameFromAttrKeys.indexOf(attrName) + 1;
-    //         // const letter = getColumnLetter(col_i);
-    //         sheet2.getCell(row, col_i).dataValidation = validationRule;
-    //     }
-    }
-
-    // Second Pass: Formula Generation
-    for (const [attrName, [start, end]] of lookUpTable) {
-        for (let row = 2; row <= 1000; row++) {
-            const attrKeys = Object.keys(attributesIndex);
-            const attrNameFromAttrKeys = attrKeys.map(key => key.split(',')[0]);
-            const col_i = attrNameFromAttrKeys.indexOf(attrName) + 1;
             const letter = getColumnLetter(col_i);
+            sheet2.getCell(row, col_i).dataValidation = validationRule;
             const formula = `IF(ISBLANK('Data Entry'!$${letter}$${row}), "", VLOOKUP('Data Entry'!$${letter}$${row}, 'Schema Description'!$A$${start}:$B$${end}, 2))`;
             sheet3.getCell(row, col_i).value = {
-                formula: formula,
+            formula: formula,
             };
         }
     }
@@ -815,18 +783,18 @@ async function generateAndSaveDateEntry() {
     const filename = 'tests/test6.json';
     const outputFilePath = `${filename.split('.')[0]}_data_entry.xlsx`;
 
-  try {
-    const generatedWorkbook = generateDataEntry(filename, outputFilePath);
-    await generatedWorkbook.xlsx.writeFile(outputFilePath);
-    console.log(' ... Date Entry file created successfully ...');
-  } catch (error) {
-    console.error('Custom Error:', error.message);
-    if (error instanceof WorkbookError) {
-      console.error('Custom Error:', error.message);
-    } else {
-      console.error('Error:', error);
+    try {
+        const generatedWorkbook = generateDataEntry(filename, outputFilePath);
+        await generatedWorkbook.xlsx.writeFile(outputFilePath);
+        console.log(' ... Date Entry file created successfully ...');
+    } catch (error) {
+        console.error('Custom Error:', error.message);
+        if (error instanceof WorkbookError) {
+            console.error('Custom Error:', error.message);
+        } else {
+            console.error('Error:', error);
+        }
     }
-  }
 }
 
 generateAndSaveDateEntry();
