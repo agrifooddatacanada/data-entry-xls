@@ -8,17 +8,6 @@ function WorkbookError(message) {
   this.stack = new Error().stack;
 }
 
-// helper function to get the column letter
-function getColumnLetter(columnNumber) {
-    let columnLetter = '';
-    while (columnNumber > 0) {
-        let remainder = (columnNumber - 1) % 26;
-        columnLetter = String.fromCharCode(65 + remainder) + columnLetter;
-        columnNumber = Math.floor((columnNumber - 1) / 26);
-    }
-    return columnLetter;
-}
-
 WorkbookError.prototype = Object.create(Error.prototype);
 WorkbookError.prototype.constructor = WorkbookError;
 
@@ -173,6 +162,17 @@ function generateDataEntry(path) {
         cell.font = { size: 10 };
         cell.alignment = { vertical: 'top', wrapText: true };
     };
+
+    // helper function to get the column letter
+    function getColumnLetter(columnNumber) {
+        let columnLetter = '';
+        while (columnNumber > 0) {
+            let remainder = (columnNumber - 1) % 26;
+            columnLetter = String.fromCharCode(65 + remainder) + columnLetter;
+            columnNumber = Math.floor((columnNumber - 1) / 26);
+        }
+        return columnLetter;
+    }
 
     /// Creating first sheet
     const sheet1 = workbook.addWorksheet('Schema Description');
