@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/agrifooddatacanada/data-entry-xls#readme",
   "dependencies": {
-    "exceljs": "^4.4.0"
+    "exceljs": "^4.4.0",
+    "xlsx": "^0.18.5"
   }
 }

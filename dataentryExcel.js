@@ -1,6 +1,5 @@
 const fs = require('fs')
 const ExcelJS = require('exceljs');
-const { get } = require('http');
 
 // Custom error-handling function
 function WorkbookError(message) {
@@ -284,7 +283,7 @@ function generateDataEntry(path) {
 
 
 
-    const sheet3 = workbook.addWorksheet('Schema conformant data');
+    const sheet3 = workbook.addWorksheet('Schema Conformant Data');
 
     const attributesIndex = {};
     let attributeNames = null;
@@ -734,30 +733,28 @@ function generateDataEntry(path) {
         };
     };
     // transform lookupEntries to fit the data validation rule
-    const transformedEntries = {};
+    // const transformedEntries = {};
 
-    for (const [key, values] of Object.entries(lookupEntries)) {
-        const keys = Object.keys(values);
-        const valueList = Object.values(values);
+    // for (const [key, values] of Object.entries(lookupEntries)) {
+    //     const keys = Object.keys(values);
+    //     const valueList = Object.values(values);
 
-        transformedEntries[key] = [keys, valueList];
-    };
+    //     transformedEntries[key] = [keys, valueList];
+    // };
 
     for (const [attrName, [start, end]] of lookUpTable) {
-        let listEntries = null;
+        // let listEntries = null;
 
-        for (const [key, [, valueList]] of Object.entries(transformedEntries)) {
-            if (key === attrName) {
-                listEntries = ['"' + valueList.join(',') + '"'];
-            };
-        };
+        // for (const [key, [, valueList]] of Object.entries(transformedEntries)) {
+        //     if (key === attrName) {
+        //         listEntries = ['"' + valueList.join(',') + '"'];
+        //     };
+        // };
 
         const validationRule = {
             type: 'list',
             showDropDown: true,
-            // formula1: `='Schema Description'!$A$${start}:$A$${end}`,
-            // ='Schema Description'!$A$166:$A$172
-            formulae: listEntries,
+            formulae: [`'Schema Description'!$A$${start}:$A$${end}`],
             showErrorMessage: true,
         };
 
@@ -780,7 +777,7 @@ function generateDataEntry(path) {
 // [test]:
 async function generateAndSaveDateEntry() {
     // const filename = 'chicken_example.json';
-    const filename = 'tests/test6.json';
+    const filename = 'tests/test1.json';
     const outputFilePath = `${filename.split('.')[0]}_data_entry.xlsx`;
 
     try {
